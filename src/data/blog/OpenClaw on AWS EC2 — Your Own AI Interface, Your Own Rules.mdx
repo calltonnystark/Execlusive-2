@@ -1,0 +1,234 @@
+---
+title: 'Self-Hosting Open Web UI | OpenClaw on AWS EC2 — Your Own AI Interface, Your Own Rules'
+description: 'Learn how to self-host OpenClaw on an AWS EC2 Ubuntu server and build your own personal AI assistant. This guide walks through creating and configuring an EC2 instance, connecting securely via SSH, installing OpenClaw without Docker, configuring an AI model through an API provider, and setting up the OpenClaw gateway and CLI. It’s a practical introduction to running your own cloud-based AI environment with greater control over your tools, configuration, and data.'
+image: '/blog/blog/00.jpeg'
+tags: [self-host OpenClaw, OpenClaw AWS EC2, OpenClaw tutorial, deploy OpenClaw, OpenClaw Ubuntu, self-hosted AI assistant, personal AI agent, AI agent AWS, OpenClaw installation, AWS AI deployment]
+date: '2026-07-12'
+isPublished: true
+---
+
+# The Problem with Commercial AI Models
+
+As AI continues to evolve, more developers and individuals are moving toward personal AI deployments — and for good reason. Commercial AI models, while powerful, often come with limitations that can slow down real work. From content restrictions to usage caps, these constraints can get in the way of productivity.
+
+## Enter Open WebUI
+
+**Open WebUI** is a self-hosted personal AI assistant designed to give you full control over your AI experience. Unlike commercial alternatives, it operates without the restrictions commonly found in mainstream platforms. It can integrate with your most-used tools and workflows, making it a flexible solution for both personal and professional use.
+
+> Think of it as your own private AI — built around your needs, not a company’s policies.
+
+## Why Developers Are Choosing Self-Hosted AI
+
+A growing number of developers and software companies are already embracing this approach. Many are deploying Open WebUI on machines like a Mac Mini or in the cloud to automate repetitive tasks and streamline workflows. The benefits are clear:
+
+- ✅ Cost-effective compared with ongoing commercial subscriptions
+- ✅ No content restrictions or usage limits
+- ✅ Full control over your data and configuration
+- ✅ High customization for real-world workflows
+
+## What We’re Building Today
+
+In this guide, we’ll take a different route — leveraging **AWS EC2** to deploy Open WebUI in the cloud. By the end, you’ll have a practical understanding of how Open WebUI works as a personal AI assistant and how to run it on your own EC2 instance.
+
+## 1. Create a New EC2 Instance in AWS
+
+For this project, we’re using **AWS EC2 (Elastic Compute Cloud)** as the hosting environment. EC2 is a good fit for this kind of deployment for two key reasons:
+
+- **⚡ Cost-effective** — EC2 offers flexible pricing models, including pay-as-you-go options, so you only pay for what you use.
+- **🚀 Better performance** — With a wide range of instance types available, EC2 gives you the compute power needed to run Open WebUI reliably in the cloud.
+
+![My old website](/blog/blog/udemy.webp)
+
+## 2. Launch a New EC2 Instance
+
+The first step is to create and configure a new EC2 instance on AWS. Follow the steps below to get your server up and running.
+
+![My old website](/blog/blog/2.webp)
+
+### Instance Configuration
+
+When setting up your new instance, use the following settings for optimal performance:
+
+- **OS / AMI**: Ubuntu Server
+- **Instance Type**: `t3.micro` / `t3.medium`
+- **Key Pair**: `.pem` key for secure SSH access
+
+> 💡 Tip: `t3.medium` is recommended if you plan to run heavier workloads. For basic testing, `t3.micro` is more affordable and usually sufficient.
+
+## 3. Connect to Your EC2 Instance
+
+Once your instance is running, AWS gives you two ways to connect to it remotely.
+
+### i. Update the System
+
+Before doing anything else, update and upgrade the system packages.
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+![My old website](/blog/blog/3.webp)
+
+### ii. SSH via Terminal
+
+Use your `.pem` key file to securely connect through your terminal:
+
+```bash
+ssh -i "your-key.pem" ubuntu@your-ec2-public-ip
+```
+
+### iii. EC2 Instance Connect
+
+This is a browser-based option available directly from the AWS Console. It works well for quick access without needing a terminal or key file.
+
+## 4. Connect to the EC2 Instance via SSH
+
+With the instance up and running, the next step is to establish a secure connection to your cloud server using **SSH (Secure Shell)**.
+
+### Prerequisites
+
+Before connecting, make sure you have the following ready:
+
+- ✅ Your downloaded `.pem` key file
+- ✅ The public IP address of your EC2 instance
+- ✅ A terminal (Linux/macOS) or Git Bash / PuTTY (Windows)
+
+### Step-by-Step Connection
+
+1. Set the correct permissions on your `.pem` key:
+
+```bash
+chmod 400 your-key.pem
+```
+
+![My old website](/blog/blog/4.webp)
+
+> 💡 Permission breakdown for `400`:
+>
+> - `4` = read (`r`)
+> - `2` = write (`w`)
+> - `1` = execute (`x`)
+>
+> The first digit is for the owner, the second for the group, and the third for others.
+
+2. Connect to the server using the SSH command:
+
+```bash
+ssh -i "your-key.pem" ubuntu@your-ec2-public-ip
+```
+
+> 💡 Replace `your-key.pem` with your actual key filename and `your-ec2-public-ip` with your instance’s public IP from the AWS Console.
+
+### Successful Connection
+
+Once connected, you will see the **Ubuntu terminal prompt**, which confirms that you are securely logged into your cloud server and ready to continue.
+
+## 5. Install OpenClaw Without Docker
+
+Now it’s time to install OpenClaw. We’ll do it without Docker so the setup stays simple and easy to understand.
+
+### Update your server packages
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+### Run the install command
+
+This command is intended for Linux distributions:
+
+```bash
+curl -fsSL https://openclaw.ai/install.sh | bash
+```
+
+![My old website](/blog/blog/5.webp)
+
+![My old website](/blog/blog/6.webp)
+
+There are different commands shown on the official OpenClaw website, depending on the setup you want.
+
+![My old website](/blog/blog/7.webp)
+
+After executing this command, a terminal-based interface will appear.
+
+![My old website](/blog/blog/8.webp)
+
+Once this runs, all required tools are installed automatically.
+
+![My old website](/blog/blog/9.webp)
+
+Now we need to complete the setup process by pressing the **Quick Start** button.
+
+![My old website](/blog/blog/10.webp)
+
+After completing the setup flow, you need a model or brain for your agent because OpenClaw gives you the body, but you still need the intelligence behind it. You connect different APIs and services so everything can work together smoothly.
+
+In this setup, we use the **Z.AI model API**, which is a free model. It is not as powerful as some premium providers like OpenAI, but it is enough for a practical setup and testing workflow.
+
+![My old website](/blog/blog/11.webp)
+
+I use **OpenRouter**. This is a free API provider that makes it easy to connect your personal model.
+
+After selecting your model, you just need to enter your API key.
+
+![My old website](/blog/blog/12.webp)
+
+Like this:
+
+![My old website](/blog/blog/14.webp)
+
+> After entering your API key, choose the model you want to use. If you want free resources, make sure you select a model that supports free responses.
+
+![My old website](/blog/blog/15.webp)
+
+After selecting your model, restart the gateway as shown below.
+
+![My old website](/blog/blog/16.webp)
+
+Gateway restart successful.
+
+![My old website](/blog/blog/17.webp)
+
+At first, I recommend choosing **Hatch in TUI services**.
+
+> **What is TUI Service?**
+>
+> **TUI Service** is the part of the system that handles text-based interaction and display, including menus, prompts, and console output for your personal assistant.
+
+![My old website](/blog/blog/18.webp)
+
+After completing the setup, we see the CLI interface that allows us to send prompts and receive responses from our personal AI agent.
+
+![My old website](/blog/blog/20.webp)
+
+Make sure your gateway and API connection are working correctly.
+
+![My old website](/blog/blog/21.webp)
+
+## Conclusion
+
+Deploying **OpenClaw on AWS EC2** is more than just a home lab experiment — it is a glimpse into the future of how individuals and developers are taking back control of their AI experience.
+
+Throughout this guide, we successfully:
+
+- ✅ Launched and configured an **AWS EC2 Ubuntu instance**
+- ✅ Established a **secure SSH connection** to the cloud server
+- ✅ Installed OpenClaw and configured the gateway
+- ✅ Connected a model through an API provider
+- ✅ Interacted with our own **personal AI assistant** via the CLI interface
+
+## The Bigger Picture
+
+Commercial AI platforms will always have their place, but they also come with rules, restrictions, and costs. By self-hosting Open WebUI on EC2, you are no longer bound by those limitations. You own the environment, control the data, and define how your AI assistant works.
+
+> “The best AI assistant is the one that works for you — on your terms.”
+
+## What’s Next?
+
+- 🔌 Connect a more powerful LLM through an API
+- 🌐 Expose your instance securely with a custom domain
+- ⚙️ Automate tasks using your self-hosted AI agent
+
+Whether you are a developer, a student, or a tech enthusiast, self-hosted AI is no longer out of reach.
+
+> **Your cloud. Your AI. Your rules.**

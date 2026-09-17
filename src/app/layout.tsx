@@ -1,5 +1,6 @@
 import UmamiAnalytics from '@/components/analytics/UmamiAnalytics';
 import VercelAnalytics from '@/components/analytics/VercelAnalytics';
+import VercelSpeedInsights from '@/components/analytics/SpeedInsights';
 import Footer from '@/components/common/Footer';
 import Navbar from '@/components/common/Navbar';
 import OnekoCat from '@/components/common/OnekoCat';
@@ -38,6 +39,7 @@ export default function RootLayout({
               <Footer />
               <UmamiAnalytics />
               <VercelAnalytics />
+              <VercelSpeedInsights />
             </ReactLenis>
           </ThemeProvider>
         </body>

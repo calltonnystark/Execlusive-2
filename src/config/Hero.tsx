@@ -51,7 +51,7 @@ export const skillComponents = {
 export const heroConfig = {
   // Personal Information
   name: 'Muhammad Usman Samar',
-  title: 'I am a Cyber Security Analyst.',
+  title: 'Cybersecurity Analyst focused on threat detection, security operations, and building resilient digital environments.',
   avatar: '/assets/logo.png',
 
   // Skills Configuration
